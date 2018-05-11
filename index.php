@@ -51,7 +51,9 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	$post_links = $post_links->href;
 
-	$link_content = file_get_html($post_links);
+	$link_content = file_get_contents($post_links);
+
+	$link_content = str_get_html($post_links);
 
 	// echo $link_content;
 
@@ -72,15 +74,19 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	$post_time = $time_match[0];
 
-	$file_name = preg_replace("/\W+/is", '-', "$post_date at {$post_time}").".pdf";
 
 	$weeks = "Week ".floor((time() - strtotime($post_time))/7);
+
+	//Create folder if not exists
 
 	if(!is_dir($weeks))
 	{
 		mkdir($weeks);
 		chmod($weeks, 777);
 	}
+
+	$file_name =  preg_replace("/\W+/is", '-',"{$weeks}/$post_date at {$post_time}.pdf");
+
 
 	// $post_week = ;
 
@@ -106,7 +112,7 @@ foreach ($html->find(".story_title a") as $post_links) {
 	$output = $dompdf->output();
 
 
-    file_put_contents("./posts/$weeks/$file_name", $output);
+    file_put_contents("./posts/$file_name", $output);
 	// unset($link_content);
 
 	die;
