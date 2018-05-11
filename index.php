@@ -51,7 +51,12 @@ $number = 1;
 // print_r($html->find(".story_title a")->href);
 
 // die;
+$imgi = 0;
 foreach ($html->find(".story_title a") as $post_links) {
+
+	$image_src = $html->find(".img_view img", $imgi)->src;
+
+	// die($image_src);
 	# code...
 
 	$post_links = $post_links->href;
@@ -126,16 +131,48 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	$file_name = "$weeks/$fn.pdf";
 
+	// $feature_img_src = $link_content->find(".img-responsive",0);
+
+	// var_dump($feature_img_src);
+
+	// echo $feature_img_src;
+
+	// die;
+
+
+	$file_name_ext = pathinfo($image_src)['extension'];
+
+	$rand_filename = uniqid().".{$file_name_ext}";
+
+	$image_bin = file_get_contents($image_src);
+
+	file_put_contents("./images/$rand_filename", $image_bin);
+
+	$new_image_src = $_SERVER["DOCUMENT_ROOT"]."/Hack-Friday/images/$rand_filename";
+
+	// echo $_SERVER['DOCUMENT_ROOT'];
+
+	// echo $new_image_src;
+
+
+
+
+	// file_put_contents("$new_image_src", $image_bin);
+
+
+
+	//
+
 
 	// $post_week = ;
 
 	// echo $link_content->find("img",0)->src;
-	$feature_img = "<center><img src='".$link_content->find("img",0)->src."' width='300px' /></center>";
+	$feature_img = "<center><img src='".$new_image_src."' width='500px' /></center>";
 
 	$number_foot = '<br /><div style="width: 100%; text-align: center; padding; 5px; color: #000;">'.$number.'.</div>';
 
 
-	$post_content = "$feature_img $title $body <br /> <br />Link to Post: $post_links <br /> $number_foot \n";
+	$post_content = "$feature_img <h1 style='text-align: center'>$title</h1> $body <br /> <br />Link to Post: <a href='$post_links'>$post_links</a> <br /> $number_foot \n";
 
 
 	// echo $post_content;
@@ -164,6 +201,7 @@ foreach ($html->find(".story_title a") as $post_links) {
     	die('No!');
     }*/
 	// unset($link_content);
+	$imgi++;
 	$number++;
 }
 	echo "Links to the generated PDF Results: </br>";
