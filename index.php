@@ -107,7 +107,7 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	//to weeks
 
-	$togo = mkdir($_SERVER['DOCUMENT_ROOT'];
+	$togo = $_SERVER['DOCUMENT_ROOT'];
 	$weeks =  preg_replace("/\W+/is", '-',"Week-".floor($post_time/604800));
 
 	//Create folder if not exists
