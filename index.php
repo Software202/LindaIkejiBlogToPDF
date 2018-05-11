@@ -103,14 +103,16 @@ foreach ($html->find(".story_title a") as $post_links) {
 	// die;
 
 	//to weeks
+
+	$togo = __DIR__;
 	$weeks =  preg_replace("/\W+/is", '-',"Week-".floor($post_time/604800));
 
 	//Create folder if not exists
 
-	if(!is_dir("posts/$weeks"))
+	if(!is_dir("$togo/posts/$weeks"))
 	{
-		mkdir("posts/$weeks");
-		chmod("posts/$weeks", 777);
+		mkdir("$togo/posts/$weeks");
+		chmod("$togo/posts/$weeks", 777);
 	}
 
 	$fn =  preg_replace("/\W+/is", '-',"$post_date at $post_time");
@@ -121,7 +123,7 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	// $post_week = ;
 
-	echo $link_content->find("img",0)->src;
+	// echo $link_content->find("img",0)->src;
 	$feature_img = "<center><img src='".$link_content->find("img",0)->src."' width='300px' /></center>";
 
 	$number_foot = '<br /><div style="width: 100%; text-align: center; padding; 5px; color: #000;">'.$number.'.</div>';
@@ -146,7 +148,7 @@ foreach ($html->find(".story_title a") as $post_links) {
 	 
 
 	// die("posts/$file_name");
-    if(file_put_contents("posts/$file_name", $output));
+    if(file_put_contents("$togo/posts/$file_name", $output));
     $links_page[]= "<a target='_blank' href='http://".$_SERVER['HTTP_HOST']."/posts/$file_name'>".$_SERVER['HTTP_HOST']."/posts/$file_name</a>";
     /*)
     {
