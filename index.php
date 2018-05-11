@@ -115,7 +115,7 @@ foreach ($html->find(".story_title a") as $post_links) {
 	if(!file_exists("$togo/posts/$weeks"))
 	{
 		mkdir("$togo/posts/$weeks", "0777", true);
-		die('yes');
+		// die('yes');
 		// chmod("$togo/posts/$weeks", 777);
 	}
 
