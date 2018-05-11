@@ -153,7 +153,7 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	// die("posts/$file_name");
     if(file_put_contents("$togo/posts/$file_name", $output));
-    $links_page[]= "<a target='_blank' href='http://".$_SERVER['HTTP_HOST']."/posts/$file_name'>".$_SERVER['HTTP_HOST']."/posts/$file_name</a>";
+    $links_page[]= "$number. <a target='_blank' href='http://".$_SERVER['HTTP_HOST']."/posts/$file_name'>".$_SERVER['HTTP_HOST']."/posts/$file_name</a>";
     /*)
     {
     	die('Yes!');
