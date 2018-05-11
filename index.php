@@ -3,7 +3,7 @@
 
 // die(__DIR__);
 
-if(!is_dir(__DIR__."/posts"))
+if(!file_exists(__DIR__."/posts"))
 {
 	die('Yes!;');
 }
