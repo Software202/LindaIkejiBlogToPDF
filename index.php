@@ -10,6 +10,8 @@
 
 // die( (String) strtotime($match[0]));
 //
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 ini_set("maximum_execution_time", 3000);
 ini_set("memory_limit", '1000M');
 
@@ -73,9 +75,9 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	$post_date = $age_match[0];
 
-	$post_time = preg_match("/\d+\:\d+\s*(AM|PM)/", $post_age, $time_match);
+	$post_time =  preg_match("/\d+\:\d+\s*(AM|PM)/", $post_age, $time_match);
 
-	$post_time = $time_match[0];
+	$post_time = $str_pst_time = $time_match[0];
 
 	// echo  $post_date." ".$post_time;
 
@@ -91,7 +93,7 @@ foreach ($html->find(".story_title a") as $post_links) {
 	// print_r($new_time_seconds);
 
 
-	$post_time = strtotime($new_time_seconds->format('Y-m-d'));
+	$post_time = strtotime($new_time_seconds->format('Y-m-d H:i:s'));
 
 	$post_time = time() - $post_time;
 
@@ -107,19 +109,19 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	//to weeks
 
-	$togo = $_SERVER['DOCUMENT_ROOT'];
+	// $togo = $_SERVER['DOCUMENT_ROOT'];
 	$weeks =  preg_replace("/\W+/is", '-',"Week-".floor($post_time/604800));
 
 	//Create folder if not exists
 
-	if(!file_exists("$togo/posts/$weeks"))
+	if(!is_dir("./posts/$weeks"))
 	{
-		mkdir("$togo/posts/$weeks", "0777", true);
+		mkdir("./posts/$weeks");
 		// die('yes');
-		// chmod("$togo/posts/$weeks", 777);
+		chmod("./posts/$weeks", 0777);
 	}
 
-	$fn =  preg_replace("/\W+/is", '-',"$post_date at $post_time");
+	$fn =  preg_replace("/\W+/is", '-',"$post_date at $str_pst_time");
 
 
 	$file_name = "$weeks/$fn.pdf";
@@ -138,7 +140,6 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	// echo $post_content;
 
-	$number++;
 
 	$dompdf = new Dompdf();
 
@@ -152,8 +153,8 @@ foreach ($html->find(".story_title a") as $post_links) {
 	 
 
 	// die("posts/$file_name");
-    if(file_put_contents("$togo/posts/$file_name", $output));
-    $links_page[]= "$number. <a target='_blank' href='http://".$_SERVER['HTTP_HOST']."/posts/$file_name'>".$_SERVER['HTTP_HOST']."/posts/$file_name</a>";
+    if(file_put_contents("./posts/$file_name", $output));
+    $links_page[]= "$number. <a target='_blank' href='http://".$_SERVER['HTTP_HOST']."/Hack-Friday/posts/$file_name'>".$_SERVER['HTTP_HOST']."/Hack-Friday/posts/$file_name</a>";
     /*)
     {
     	die('Yes!');
@@ -163,8 +164,9 @@ foreach ($html->find(".story_title a") as $post_links) {
     	die('No!');
     }*/
 	// unset($link_content);
+	$number++;
 }
-	echo "Links to the generate PDF Results: </br>";
+	echo "Links to the generated PDF Results: </br>";
     echo implode("<br />", $links_page);
 
 
