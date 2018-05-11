@@ -1,5 +1,11 @@
 <?php
 
+
+// $sample_time = preg_match("/\d+\:\d+\s*(AM|PM)/", " by Linda Ikeji at 11/05/2018 1:42 PM", $match);
+
+// print_r($match);
+
+// die( (String) strtotime($match[0]));
 //
 ini_set("maximum_execution_time", 3000);
 ini_set("memory_limit", '1000M');
@@ -11,9 +17,8 @@ require "vendor/autoload.php";
 
 use Dompdf\Dompdf;
 
-$dompdf = new Dompdf();
 
-$dompdf->setPaper('A4', 'landscape');
+// $dompdf->setPaper('A4', 'landscape');
 
 $url = "https://www.lindaikejisblog.com/";
 $html = file_get_contents($url);
@@ -59,26 +64,39 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	$post_age = $link_content->find("article .post_age",0)->plaintext;
 
-	$post_date = preg_match('/\d\/\d\/\d\//is', $post_age, $age_match);
+	$post_date = preg_match("/\d+\/\d+\/\d+/", $post_age, $age_match);
 
 	$post_date = $age_match[0];
 
-	$post_time = preg_match('/\d\/\:\d\s+AM|PM/is', $post_age, $time_match);
+	$post_time = preg_match("/\d+\:\d+\s*(AM|PM)/", $post_age, $time_match);
 
 	$post_time = $time_match[0];
 
-	$file_name = "$post_date at {$post_time}.pdf";
+	$file_name = preg_replace("/\W+/is", '-', "$post_date at {$post_time}").".pdf";
+
+	$weeks = "Week ".floor((time() - strtotime($post_time))/7);
+
+	if(!is_dir($weeks))
+	{
+		mkdir($weeks);
+		chmod($weeks, 777);
+	}
 
 	// $post_week = ;
 
-	$feature_img = "<img src='".$link_content->find("summary img",0)->src."' />";
+	$feature_img = "<img src='".$link_content->find("img",0)->src."' />";
 
-	$post_content = "$feature_img $title $body <br /> Link to Post: $post_links <br /> $number \n";
+	$number_foot = '<div style="width: 100%; text-align: center; padding; 5px; color: #000;">$number.</div>';
 
 
-	echo $post_content;
+	$post_content = "$feature_img $title $body <br /> Link to Post: $post_links <br /> $number_foot \n";
+
+
+	// echo $post_content;
 
 	$number++;
+
+	$dompdf = new Dompdf();
 
 	$dompdf->loadHtml($post_content);
 
@@ -88,9 +106,10 @@ foreach ($html->find(".story_title a") as $post_links) {
 	$output = $dompdf->output();
 
 
-    file_put_contents("./posts/$file_name", $output);
+    file_put_contents("./posts/$weeks/$file_name", $output);
 	// unset($link_content);
 
+	die;
 }
 
 
