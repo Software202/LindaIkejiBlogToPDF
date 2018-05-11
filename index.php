@@ -1,6 +1,7 @@
 <?php
 
 
+
 // $sample_time = preg_match("/\d+\:\d+\s*(AM|PM)/", " by Linda Ikeji at 11/05/2018 1:42 PM", $match);
 
 // print_r($match);
@@ -107,10 +108,12 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	//Create folder if not exists
 
-	if(!is_dir("./posts/$weeks"))
+	$togo = $_SERVER['DOCUMENT_ROOT'];
+
+	if(!is_dir($togo."/posts/$weeks"))
 	{
-		mkdir("./posts/$weeks");
-		chmod("./posts/$weeks", 777);
+		mkdir($togo."/posts/$weeks");
+		chmod($togo."/posts/$weeks", 777);
 	}
 
 	$fn =  preg_replace("/\W+/is", '-',"$post_date at $post_time");
@@ -146,7 +149,7 @@ foreach ($html->find(".story_title a") as $post_links) {
 	 
 
 	// die("./posts/$file_name");
-    if(file_put_contents("./posts/$file_name", $output));
+    if(file_put_contents($togo."/posts/$file_name", $output));
     $links_page[]= "<a target='_blank' href='http://".$_SERVER['HTTP_HOST']."/posts/$file_name'>".$_SERVER['HTTP_HOST']."/posts/$file_name</a>";
     /*)
     {
