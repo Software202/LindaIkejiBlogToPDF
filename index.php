@@ -3,10 +3,6 @@
 
 // die(__DIR__);
 
-if(!file_exists(__DIR__."/posts"))
-{
-	die('Yes!;');
-}
 
 // $sample_time = preg_match("/\d+\:\d+\s*(AM|PM)/", " by Linda Ikeji at 11/05/2018 1:42 PM", $match);
 
@@ -111,12 +107,12 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	//to weeks
 
-	$togo = __DIR__;
+	$togo = mkdir($_SERVER['DOCUMENT_ROOT'];
 	$weeks =  preg_replace("/\W+/is", '-',"Week-".floor($post_time/604800));
 
 	//Create folder if not exists
 
-	if(!is_dir("$togo/posts/$weeks"))
+	if(!file_exists("$togo/posts/$weeks"))
 	{
 		mkdir("$togo/posts/$weeks");
 		chmod("$togo/posts/$weeks", 777);
