@@ -73,7 +73,7 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	$post_time = preg_match("/\d+\:\d+\s*(AM|PM)/", $post_age, $time_match);
 
-	$post_time = $time_match[0];
+	$post_time = $str_pst_time = $time_match[0];
 
 	// echo  $post_date." ".$post_time;
 
@@ -116,7 +116,7 @@ foreach ($html->find(".story_title a") as $post_links) {
 		chmod($togo."/posts/$weeks", 777);
 	}
 
-	$fn =  preg_replace("/\W+/is", '-',"$post_date at $post_time");
+	$fn =  preg_replace("/\W+/is", '-',"$post_date at $str_pst_time");
 
 
 	$file_name = "$weeks/$fn.pdf";
