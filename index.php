@@ -53,7 +53,7 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	$link_content = file_get_contents($post_links);
 
-	$link_content = str_get_html($post_links);
+	$link_content = str_get_html($link_content);
 
 	// echo $link_content;
 
@@ -74,28 +74,60 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	$post_time = $time_match[0];
 
+	// echo  $post_date." ".$post_time;
 
-	$weeks = "Week ".floor((time() - strtotime($post_time))/7);
+	// die(date('d/m/Y h:i A')."<br /> $post_date $post_time");
+	// die($post_date." ".$post_time);
+
+	// print_r(new DateTime());
+
+	// die;
+
+	$new_time_seconds = DateTime::createFromFormat('d/m/Y h:i A', $post_date." ".$post_time);
+
+	// print_r($new_time_seconds);
+
+
+	$post_time = strtotime($new_time_seconds->format('Y-m-d'));
+
+	$post_time = time() - $post_time;
+
+	// die;
+
+	// die(time()." $post_time");
+
+	// $subtr = time() - $post_time;
+
+	// echo $subtr;
+
+	// die;
+
+	//to weeks
+	$weeks =  preg_replace("/\W+/is", '-',"Week-".floor($post_time/604800));
 
 	//Create folder if not exists
 
-	if(!is_dir($weeks))
+	if(!is_dir("./posts/$weeks"))
 	{
-		mkdir($weeks);
-		chmod($weeks, 777);
+		mkdir("./posts/$weeks");
+		chmod("./posts/$weeks", 777);
 	}
 
-	$file_name =  preg_replace("/\W+/is", '-',"{$weeks}/$post_date at {$post_time}.pdf");
+	$fn =  preg_replace("/\W+/is", '-',"$post_date at $post_time");
+
+
+	$file_name = "$weeks/$fn.pdf";
 
 
 	// $post_week = ;
 
-	$feature_img = "<img src='".$link_content->find("img",0)->src."' />";
+	echo $link_content->find("img",0)->src;
+	$feature_img = "<center><img src='".$link_content->find("img",0)->src."' width='300px' /></center>";
 
-	$number_foot = '<div style="width: 100%; text-align: center; padding; 5px; color: #000;">$number.</div>';
+	$number_foot = '<br /><div style="width: 100%; text-align: center; padding; 5px; color: #000;">'.$number.'.</div>';
 
 
-	$post_content = "$feature_img $title $body <br /> Link to Post: $post_links <br /> $number_foot \n";
+	$post_content = "$feature_img $title $body <br /> <br />Link to Post: $post_links <br /> $number_foot \n";
 
 
 	// echo $post_content;
@@ -111,12 +143,23 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	$output = $dompdf->output();
 
+	 
 
-    file_put_contents("./posts/$file_name", $output);
+	// die("./posts/$file_name");
+    if(file_put_contents("./posts/$file_name", $output));
+    $links_page[]= "<a target='_blank' href='http://".$_SERVER['HTTP_HOST']."/posts/$file_name'>".$_SERVER['HTTP_HOST']."/posts/$file_name</a>";
+    /*)
+    {
+    	die('Yes!');
+    }
+    else
+    {
+    	die('No!');
+    }*/
 	// unset($link_content);
-
-	die;
 }
+	echo "Links to the generate PDF Results: </br>";
+    echo implode("<br />", $links_page);
 
 
 ?>
