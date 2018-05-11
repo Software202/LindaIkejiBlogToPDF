@@ -1,7 +1,12 @@
 <?php
 
 
-die(__DIR__);
+// die(__DIR__);
+
+if(is_dir(__DIR__."/posts"))
+{
+	die('Yes!;');
+}
 
 // $sample_time = preg_match("/\d+\:\d+\s*(AM|PM)/", " by Linda Ikeji at 11/05/2018 1:42 PM", $match);
 
