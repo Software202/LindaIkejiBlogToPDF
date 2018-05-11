@@ -1,6 +1,8 @@
 <?php
 
 
+die(__DIR__);
+
 // $sample_time = preg_match("/\d+\:\d+\s*(AM|PM)/", " by Linda Ikeji at 11/05/2018 1:42 PM", $match);
 
 // print_r($match);
