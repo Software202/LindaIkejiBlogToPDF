@@ -187,6 +187,8 @@ foreach ($html->find(".story_title a") as $post_links) {
 
 	$output = $dompdf->output();
 
+	$dompdf = null;
+
 	 
 
 	// die("posts/$file_name");
